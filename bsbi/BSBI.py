@@ -35,6 +35,9 @@ class BSBIIndex:
             
     def index(self):
         for block_dir_relative in sorted(next(os.walk(self.data_dir))[1]):
+            
+            print('indexing block:', block_dir_relative)
+            
             td_pairs = self.parse_block(block_dir_relative)
             index_id = 'index_'+block_dir_relative
             self.intermediate_indices.append(index_id)
@@ -44,6 +47,9 @@ class BSBIIndex:
                 self.invert_write(td_pairs, index)
                 td_pairs = None
         self.save()
+
+        print('merging indexed blocks...')
+
         with InvertedIndexWriter(self.index_name, directory=self.output_dir, 
                                  postings_encoding=
                                  self.postings_encoding) as merged_index:
@@ -55,14 +61,13 @@ class BSBIIndex:
                                           self.postings_encoding)) 
                  for index_id in self.intermediate_indices]
                 self.merge(indices, merged_index)
+        print('finished indexing.')
                             
     def parse_block(self, block_dir_relative):
         block_abs_path = os.path.join(self.data_dir, block_dir_relative)
         doc_names = next(os.walk(block_abs_path), (None, None, []))[2]
         
         term_doc_list = []
-        
-        __test = []
         
         for doc_name in doc_names:
             doc_path = os.path.join(block_abs_path, doc_name)
@@ -73,12 +78,8 @@ class BSBIIndex:
                 for line in f:
                     for term in line.split():
                         term_id = self.term_id_map[term]
-                        __test.append(doc_path) if term_id == 58 else None
                         term_doc_list.append((term_id, doc_id))
-                        
-        print(self.term_id_map[58])
-        print(set(__test))
-        
+                                
         return term_doc_list
         
     def invert_write(self, td_pairs, index):
@@ -115,12 +116,19 @@ class BSBIIndex:
         if len(self.term_id_map) == 0 or len(self.doc_id_map) == 0:
             self.load()
 
-        term_id = self.term_id_map[query]
-        print('term_id=', term_id)
+        term_ids = [] 
+        for term in query:
+            term_ids.append(self.term_id_map.get(term))
+            
+        print('term_ids=', term_ids)
         with InvertedIndexMapper(self.index_name, self.postings_encoding, self.output_dir) as index:
-            postings = index[term_id]
-            print(postings)
+            postings = index[term_ids[0]]
+            for term_id in term_ids:
+                postings = self.intersect(postings, index[term_id])
             results = []
             for doc_id in postings:
                 results.append(self.doc_id_map[doc_id])
             return set(results)
+
+    def intersect(self, a, b):
+        return [x for x in a if x in b]

@@ -25,3 +25,6 @@ class IdMap:
             return self._get_id(key)
         else:
             raise TypeError
+        
+    def get(self, s):
+        return self.str_to_id.get(s)
