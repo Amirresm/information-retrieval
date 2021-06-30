@@ -13,3 +13,8 @@ class UncompressedPostings:
         decoded_postings_list = array.array('L')
         decoded_postings_list.frombytes(encoded_postings_list)
         return decoded_postings_list.tolist()
+    
+if __name__ == '__main__':
+    x = UncompressedPostings.encode([1,2,3])
+    print(x)
+    print(UncompressedPostings.decode(x))
