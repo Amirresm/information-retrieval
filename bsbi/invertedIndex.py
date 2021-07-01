@@ -1,6 +1,7 @@
 import os
-from postingEncoder import UncompressedPostings
 import pickle
+
+from .postingEncoder import UncompressedPostings
 
 
 class InvertedIndex:

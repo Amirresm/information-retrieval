@@ -1,7 +1,8 @@
 import os
-from helper import normalize_docs
-from BSBI import BSBIIndex
-from normalizer import DocNormalizer
+
+from bsbi.helper import normalize_docs
+from bsbi.BSBI import BSBIIndex
+from bsbi.normalizer import DocNormalizer
 
 print('\033c')
 

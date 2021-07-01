@@ -1,5 +1,3 @@
-from idf import Idf
-
 class BM25Scorer:
 
     def __init__(self, query_term_ids, doc_len_map, idf, k1 = 1.5, b = 0.75):

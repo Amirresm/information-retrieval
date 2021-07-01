@@ -1,5 +1,5 @@
-from scorer import BM25Scorer
-from idf import Idf
+from .scorer import BM25Scorer
+from .idf import Idf
 
 class Ranker:
     def __init__(self, bsbi, query):
@@ -25,13 +25,14 @@ class Ranker:
 
         for doc_id in self.doc_len_map.table.keys():
             doc_score = bm25Scorer.calculate_score(doc_id)
-            docs_score.append((doc_id, doc_score))
+            doc_path = self.bsbi.doc_id_map[doc_id]
+            docs_score.append((doc_score, doc_path))
         
         return docs_score
     
     def rank(self):
         docs_score = self.__calculate_docs_score()
-        sorted_docs_score = sorted(docs_score, key=lambda x:x[1], reverse=True)
-        
+        sorted_docs_score = sorted(docs_score, key=lambda x:x[0], reverse=True)
+
         return sorted_docs_score
 

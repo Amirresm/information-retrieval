@@ -1,11 +1,12 @@
 import os
-from pathlib import Path
 import pickle
 import contextlib
-from idmap import IdMap
-from documentLengthMap import DocumentLengthMap
-from invertedIndex import InvertedIndexWriter, InvertedIndexIterator, InvertedIndexMapper
 import heapq
+from pathlib import Path
+
+from .idmap import IdMap
+from .documentLengthMap import DocumentLengthMap
+from .invertedIndex import InvertedIndexWriter, InvertedIndexIterator, InvertedIndexMapper
 
 class BSBIIndex:
     
