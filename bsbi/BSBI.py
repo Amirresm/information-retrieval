@@ -3,6 +3,7 @@ from pathlib import Path
 import pickle
 import contextlib
 from idmap import IdMap
+from documentLengthMap import DocumentLengthMap
 from invertedIndex import InvertedIndexWriter, InvertedIndexIterator, InvertedIndexMapper
 import heapq
 
@@ -12,6 +13,7 @@ class BSBIIndex:
                  postings_encoding = None):
         self.term_id_map = IdMap()
         self.doc_id_map = IdMap()
+        self.doc_len_map = DocumentLengthMap()
         self.data_dir = data_dir
         self.output_dir = output_dir
         self.index_name = index_name
@@ -77,7 +79,10 @@ class BSBIIndex:
             
             with open(doc_path, 'r', encoding='utf8') as f:
                 for line in f:
-                    for term in line.split():
+                    splited_line = line.split()
+                    self.doc_len_map.add(doc_id, len(splited_line))
+
+                    for term in splited_line:
                         term_id = self.term_id_map[term]
                         term_doc_list.append((term_id, doc_id))
                                 
@@ -130,6 +135,15 @@ class BSBIIndex:
             for doc_id in postings:
                 results.append(self.doc_id_map[doc_id])
             return set(results)
+
+    def get_inverted_index(self, term_ids):
+        postings = {}
+
+        with InvertedIndexMapper(self.index_name, self.postings_encoding, self.output_dir) as index:
+            for term_id in term_ids:
+                postings[term_id] = index[term_id]
+    
+        return postings
 
     def intersect(self, a, b):
         return [x for x in a if x in b]

@@ -2,6 +2,7 @@ import os
 from helper import normalize_docs
 from BSBI import BSBIIndex
 from normalizer import DocNormalizer
+from ranker import Ranker
 
 print('\033c')
 
@@ -21,14 +22,7 @@ bsbi = BSBIIndex(abs_transformed_data_path, abs_output_path)
 
 bsbi.index()
 
-while True:
-    query = input('query: ')
-    
-    normalized_query = normalizer.query_tokenizer(query)
-    print('normalized query:', normalized_query)
-    
-    results = bsbi.retrieve(normalized_query)
+normalized_query = normalizer.query_tokenizer("باشگاه استقلال")
+ranker = Ranker(bsbi, normalized_query)
 
-    for result in results:
-        print(result)
-        print('-----------------')
+print(ranker.rank())
