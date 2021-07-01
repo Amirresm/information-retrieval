@@ -1,5 +1,5 @@
 import os
-# from postingEncoder import UncompressedPostings
+from pathlib import Path
 import pickle
 import contextlib
 from idmap import IdMap
@@ -34,6 +34,7 @@ class BSBIIndex:
             self.doc_id_map = pickle.load(f)
             
     def index(self):
+        Path(self.output_dir).mkdir(parents=True, exist_ok=True)
         for block_dir_relative in sorted(next(os.walk(self.data_dir))[1]):
             
             print('indexing block:', block_dir_relative)

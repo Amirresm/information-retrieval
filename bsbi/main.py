@@ -11,9 +11,13 @@ data_path = '../Dataset_IR/Test'
 transformed_data_path = '../transformed-data'
 output_path = '../output'
 
-normalize_docs(data_path, transformed_data_path, normalizer)
+abs_data_path = os.path.abspath(data_path)
+abs_transformed_data_path = os.path.abspath(transformed_data_path)
+abs_output_path = os.path.abspath(output_path)
 
-bsbi = BSBIIndex(transformed_data_path, output_path)
+normalize_docs(abs_data_path, abs_transformed_data_path, normalizer)
+
+bsbi = BSBIIndex(abs_transformed_data_path, abs_output_path)
 
 bsbi.index()
 
