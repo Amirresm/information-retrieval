@@ -3,6 +3,7 @@ import os
 from bsbi.helper import normalize_docs
 from bsbi.BSBI import BSBIIndex
 from bsbi.normalizer import DocNormalizer
+from ranking.ranker import Ranker
 
 print('\033c')
 
@@ -26,10 +27,22 @@ while True:
     query = input('query: ')
     
     normalized_query = normalizer.query_tokenizer(query)
-    print('normalized query:', normalized_query)
+
+    print("Select mode:")
+
+    print('Enter 0 --> BSBI')
+    print("Enter 1 --> Ranking")
+
+    mode = input("mode: ") 
+    results = {}
     
-    results = bsbi.retrieve(normalized_query)
+    if mode == "0":
+        results = bsbi.retrieve(normalized_query)
+    else: 
+        ranker = Ranker(bsbi, normalized_query)
+        results = ranker.rank()
 
     for result in results:
         print(result)
         print('-----------------')
+
