@@ -2,5 +2,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-/output
+data/output
+data/transformed-data
+
 /.vscode

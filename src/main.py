@@ -9,9 +9,9 @@ print('\033c')
 
 normalizer = DocNormalizer()
 
-data_path = 'Dataset_IR/Test'
-transformed_data_path = 'transformed-data'
-output_path = 'output'
+data_path = 'data/data-set/Test'
+transformed_data_path = 'data/transformed-data'
+output_path = 'data/output'
 
 abs_data_path = os.path.abspath(data_path)
 abs_transformed_data_path = os.path.abspath(transformed_data_path)
