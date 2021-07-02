@@ -4,6 +4,7 @@ from bsbi.helper import normalize_docs
 from bsbi.BSBI import BSBIIndex
 from bsbi.normalizer import DocNormalizer
 from ranking.ranker import Ranker
+from bsbi.helper import generate_abs_path
 
 print('\033c')
 
@@ -13,9 +14,7 @@ data_path = 'data/data-set/Train'
 transformed_data_path = 'data/transformed-data'
 output_path = 'data/output'
 
-abs_data_path = os.path.abspath(data_path)
-abs_transformed_data_path = os.path.abspath(transformed_data_path)
-abs_output_path = os.path.abspath(output_path)
+abs_data_path, abs_transformed_data_path, abs_output_path = generate_abs_path(data_path, transformed_data_path, output_path)
 
 normalize_docs(abs_data_path, abs_transformed_data_path, normalizer)
 
