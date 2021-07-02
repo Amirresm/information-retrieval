@@ -9,7 +9,7 @@ print('\033c')
 
 normalizer = DocNormalizer()
 
-data_path = 'data/data-set/Test'
+data_path = 'data/data-set/Train'
 transformed_data_path = 'data/transformed-data'
 output_path = 'data/output'
 
@@ -23,8 +23,10 @@ bsbi = BSBIIndex(abs_transformed_data_path, abs_output_path)
 
 bsbi.index()
 
+ranker = Ranker(bsbi)
+
 while True:
-    query = input('query: ')
+    query = input('Query: ')
     
     normalized_query = normalizer.query_tokenizer(query)
 
@@ -39,8 +41,7 @@ while True:
     if mode == "0":
         results = bsbi.retrieve(normalized_query)
     else: 
-        ranker = Ranker(bsbi, normalized_query)
-        results = ranker.rank()
+        results = ranker.rank(normalized_query)
 
     for result in results:
         print(result)
