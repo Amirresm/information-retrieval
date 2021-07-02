@@ -24,3 +24,9 @@ def normalize_docs(data_path, transformed_data_path, normalizer, force=False):
         print('finished normalizing docs.')
     else:
         print('normalized docs exist.')
+        
+def generate_abs_path(data_path, transformed_data_path, output_path):
+    abs_data_path = os.path.abspath(data_path)
+    abs_transformed_data_path = os.path.abspath(transformed_data_path)
+    abs_output_path = os.path.abspath(output_path)
+    return (abs_data_path, abs_transformed_data_path, abs_output_path);

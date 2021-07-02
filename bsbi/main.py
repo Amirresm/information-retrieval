@@ -1,5 +1,5 @@
 import os
-from helper import normalize_docs
+from helper import normalize_docs, generate_abs_path
 from BSBI import BSBIIndex
 from normalizer import DocNormalizer
 
@@ -11,11 +11,7 @@ data_path = 'Dataset_IR/Train'
 transformed_data_path = 'transformed-data'
 output_path = 'output'
 
-print(os.path.dirname(os.path.abspath(__file__)))
-
-abs_data_path = os.path.abspath(data_path)
-abs_transformed_data_path = os.path.abspath(transformed_data_path)
-abs_output_path = os.path.abspath(output_path)
+abs_data_path, abs_transformed_data_path, abs_output_path = generate_abs_path(data_path, transformed_data_path, output_path)
 
 normalize_docs(abs_data_path, abs_transformed_data_path, normalizer, True)
 
